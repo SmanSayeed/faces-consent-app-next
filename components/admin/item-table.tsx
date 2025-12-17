@@ -10,7 +10,17 @@ import {
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Edit2, Trash2 } from "lucide-react"
+import { MoreHorizontal } from "lucide-react"
+import Link from "next/link"
+
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 interface Item {
     id: number
@@ -75,12 +85,32 @@ export function ItemTable({ items, regions, isLoading, onEdit, onDelete }: ItemT
                                 <Badge variant="outline">{getRegionName(item.region_id)}</Badge>
                             </TableCell>
                             <TableCell className="text-right">
-                                <Button variant="ghost" className="h-8 w-8 p-0 mr-2" onClick={() => onEdit(item)}>
-                                    <Edit2 className="h-4 w-4" />
-                                </Button>
-                                <Button variant="ghost" className="h-8 w-8 p-0 text-red-500 hover:text-red-700 hover:bg-red-50" onClick={() => onDelete(item.id)}>
-                                    <Trash2 className="h-4 w-4" />
-                                </Button>
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="ghost" className="h-8 w-8 p-0">
+                                            <span className="sr-only">Open menu</span>
+                                            <MoreHorizontal className="h-4 w-4" />
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end">
+                                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                        <Link href={`/dashboard/categories/${item.category_id}/items/${item.id}`} passHref>
+                                            <DropdownMenuItem asChild>
+                                                <span>View details</span>
+                                            </DropdownMenuItem>
+                                        </Link>
+                                        <DropdownMenuItem onClick={() => onEdit(item)}>
+                                            Edit item
+                                        </DropdownMenuItem>
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuItem
+                                            className="text-red-600"
+                                            onClick={() => onDelete(item.id)}
+                                        >
+                                            Delete item
+                                        </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
                             </TableCell>
                         </TableRow>
                     ))}

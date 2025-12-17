@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase"
 import { LayoutDashboard, Users, Building2, Layers, Megaphone, Video, Settings, X, LogOut, Menu } from "lucide-react"
 import AdminHeader from "@/components/admin/header"
 import { Button } from "@/components/ui/button"
+import { UserNav } from "@/components/admin/user-nav"
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const [authorized, setAuthorized] = useState(false)
@@ -112,7 +113,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         <Menu className="w-6 h-6" />
                     </button>
                     <div className="flex items-center gap-4 ml-auto">
-                        <span className="text-sm text-muted-foreground">Admin Mode</span>
+                        <UserNav />
                     </div>
                 </header>
 

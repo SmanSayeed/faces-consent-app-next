@@ -29,6 +29,11 @@ interface User {
     is_clinic: boolean
     active_as_clinic: boolean
     created_at: string
+    // Added for location support
+    location?: {
+        current_lat: number
+        current_long: number
+    }
 }
 
 interface UserTableProps {
@@ -49,6 +54,7 @@ export function UserTable({ users, isLoading }: UserTableProps) {
                         <TableHead>Name</TableHead>
                         <TableHead>Email</TableHead>
                         <TableHead>Role</TableHead>
+                        <TableHead>Location</TableHead>
                         <TableHead>Status</TableHead>
                         <TableHead>Joined</TableHead>
                         <TableHead className="text-right">Actions</TableHead>
@@ -66,6 +72,20 @@ export function UserTable({ users, isLoading }: UserTableProps) {
                                     <Badge variant="default">Clinic</Badge>
                                 ) : (
                                     <Badge variant="secondary">User</Badge>
+                                )}
+                            </TableCell>
+                            <TableCell>
+                                {user.location ? (
+                                    <a
+                                        href={`https://www.google.com/maps/search/?api=1&query=${user.location.current_lat},${user.location.current_long}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-blue-600 hover:underline text-sm flex items-center gap-1"
+                                    >
+                                        View Map
+                                    </a>
+                                ) : (
+                                    <span className="text-muted-foreground text-sm">N/A</span>
                                 )}
                             </TableCell>
                             <TableCell>
@@ -99,7 +119,7 @@ export function UserTable({ users, isLoading }: UserTableProps) {
                     ))}
                     {users.length === 0 && (
                         <TableRow>
-                            <TableCell colSpan={6} className="h-24 text-center">
+                            <TableCell colSpan={7} className="h-24 text-center">
                                 No users found.
                             </TableCell>
                         </TableRow>
