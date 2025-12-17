@@ -1,0 +1,27 @@
+
+> faces-consent-admin@0.1.0 build L:\android\test\backend-next\faces-consent-app-next
+> next build
+
+   Γû▓ Next.js 16.0.10 (Turbopack)
+   - Environments: .env
+
+   Creating an optimized production build ...
+ Γ£ô Compiled successfully in 5.3s
+   Skipping validation of types
+   Collecting page data using 11 workers ...
+   Generating static pages using 11 workers (0/12) ...
+Error occurred prerendering page "/dashboard/categories". Read more: https://nextjs.org/docs/messages/prerender-error
+Error: @supabase/ssr: Your project's URL and API key are required to create a Supabase client!
+
+Check your Supabase project's API settings to find these values
+
+https://supabase.com/dashboard/project/_/settings/api
+    at <unknown> (https://supabase.com/dashboard/project/_/settings/api)
+    at <unknown> (L:\android\test\backend-next\faces-consent-app-next\.next\server\chunks\ssr\_24be5935._.js:55:63)
+    at cx (L:\android\test\backend-next\faces-consent-app-next\.next\server\chunks\ssr\_24be5935._.js:59:4544)
+    at s (L:\android\test\backend-next\faces-consent-app-next\.next\server\chunks\ssr\_d27e207d._.js:1:78480) {
+  digest: '110565213'
+}
+Export encountered an error on /dashboard/categories/page: /dashboard/categories, exiting the build.
+ Γ¿» Next.js build worker exited with code: 1 and signal: null
+ΓÇëELIFECYCLEΓÇë Command failed with exit code 1.

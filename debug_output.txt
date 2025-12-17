@@ -1,0 +1,11 @@
+Env path: L:\android\test\backend-next\faces-consent-app-next\.env
+Buffer hex start: 4558504f5f5055424c49
+Content length: 517
+First 50 chars: EXPO_PUBLIC_SUPABASE_URL=https://nmjgxptafvkgofrzr
+Line count: 4
+Line 1: Key found [EXPO_PUBLIC_SUPABASE_URL]
+Line 2: Key found [EXPO_PUBLIC_SUPABASE_ANON_KEY]
+Line 3: Key found [EXPO_PUBLIC_SERVICE_ROLE_KEY]
+Missing vars!
+NEXT_PUBLIC_SUPABASE_URL: MISSING
+NEXT_PUBLIC_SUPABASE_ANON_KEY: MISSING
