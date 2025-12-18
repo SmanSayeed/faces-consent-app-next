@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { createClient } from "@/lib/supabase"
+import { checkAdminUser } from "@/app/actions/auth"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -15,7 +15,6 @@ export default function LoginPage() {
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const router = useRouter()
-  const supabase = createClient()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -23,24 +22,20 @@ export default function LoginPage() {
 
     try {
       // SIMPLE LOGIN BYPASS (Requested by User)
-      // Since Supabase Auth is returning 500 (DB Schema Error), we verify against profiles directly.
+      // Since Supabase Auth is returning 500 (DB Schema Error), we verify against profiles directly using a server action (bypassing RLS).
       console.log("Attempting simple login...");
 
-      // 1. Check Profile Exists & is Admin
-      const { data: profile, error: profileError } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('email', email)
-        .single()
+      // 1. Check Profile Exists & is Admin via Server Action
+      const { success, isAdmin, error } = await checkAdminUser(email)
 
-      if (profileError || !profile) {
-        console.error("Profile fetch error:", profileError);
-        toast.error("Login failed", { description: "User not found." });
+      if (!success) {
+        console.error("Profile check error:", error);
+        toast.error("Login failed", { description: error || "User not found." });
         setLoading(false);
         return;
       }
 
-      if (!profile.is_admin) {
+      if (!isAdmin) {
         toast.error("Access denied", { description: "Not an admin." });
         setLoading(false);
         return;
