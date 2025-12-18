@@ -1,4 +1,4 @@
-"use client"
+import { ImageUpload } from "@/components/admin/image-upload"
 
 import { useState } from "react"
 import { useForm } from "react-hook-form"
@@ -14,6 +14,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog"
+
 import {
     Form,
     FormControl,
@@ -55,7 +56,7 @@ export function MarketingDialog({ open, onOpenChange, itemToEdit, onSuccess }: M
     const supabase = createClient()
 
     const form = useForm<z.infer<typeof marketingSchema>>({
-        resolver: zodResolver(marketingSchema),
+        resolver: zodResolver(marketingSchema) as any,
         defaultValues: {
             title: itemToEdit?.title || "",
             image_url: itemToEdit?.image_url || "",
@@ -118,14 +119,21 @@ export function MarketingDialog({ open, onOpenChange, itemToEdit, onSuccess }: M
                                 </FormItem>
                             )}
                         />
+
+
                         <FormField
                             control={form.control}
                             name="image_url"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Image URL</FormLabel>
+                                    <FormLabel>Marketing Image</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="https://..." {...field} />
+                                        <ImageUpload
+                                            value={field.value ? [field.value] : []}
+                                            onChange={(urls) => field.onChange(urls[0] || "")}
+                                            onRemove={() => field.onChange("")}
+                                            disabled={loading}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

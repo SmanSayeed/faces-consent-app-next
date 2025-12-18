@@ -11,6 +11,7 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { MoreHorizontal } from "lucide-react"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 import {
     DropdownMenu,
@@ -26,6 +27,7 @@ interface User {
     email: string
     first_name: string
     last_name: string
+    image_url?: string
     is_clinic: boolean
     active_as_clinic: boolean
     created_at: string
@@ -39,9 +41,11 @@ interface User {
 interface UserTableProps {
     users: User[]
     isLoading: boolean
+    onEdit: (user: User) => void
+    onDelete: (id: string) => void
 }
 
-export function UserTable({ users, isLoading }: UserTableProps) {
+export function UserTable({ users, isLoading, onEdit, onDelete }: UserTableProps) {
     if (isLoading) {
         return <div>Loading users...</div>
     }
@@ -64,7 +68,13 @@ export function UserTable({ users, isLoading }: UserTableProps) {
                     {users.map((user) => (
                         <TableRow key={user.id}>
                             <TableCell className="font-medium">
-                                {user.first_name} {user.last_name}
+                                <div className="flex items-center gap-2">
+                                    <Avatar className="h-8 w-8">
+                                        <AvatarImage src={user.image_url} alt={user.first_name} />
+                                        <AvatarFallback>{user.first_name?.[0]}{user.last_name?.[0]}</AvatarFallback>
+                                    </Avatar>
+                                    <span>{user.first_name} {user.last_name}</span>
+                                </div>
                             </TableCell>
                             <TableCell>{user.email}</TableCell>
                             <TableCell>
@@ -110,8 +120,13 @@ export function UserTable({ users, isLoading }: UserTableProps) {
                                             Copy User ID
                                         </DropdownMenuItem>
                                         <DropdownMenuSeparator />
-                                        <DropdownMenuItem>View details</DropdownMenuItem>
-                                        <DropdownMenuItem className="text-red-600">Ban user</DropdownMenuItem>
+                                        <DropdownMenuItem onClick={() => onEdit(user)}>Edit User</DropdownMenuItem>
+                                        <DropdownMenuItem
+                                            className="text-red-600"
+                                            onClick={() => onDelete(user.id)}
+                                        >
+                                            Ban / Delete User
+                                        </DropdownMenuItem>
                                     </DropdownMenuContent>
                                 </DropdownMenu>
                             </TableCell>

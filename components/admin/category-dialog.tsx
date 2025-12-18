@@ -1,4 +1,4 @@
-"use client"
+import { ImageUpload } from "@/components/admin/image-upload"
 
 import { useState } from "react"
 import { useForm } from "react-hook-form"
@@ -52,7 +52,7 @@ export function CategoryDialog({ open, onOpenChange, categoryToEdit, onSuccess }
     const supabase = createClient()
 
     const form = useForm<z.infer<typeof categorySchema>>({
-        resolver: zodResolver(categorySchema),
+        resolver: zodResolver(categorySchema) as any,
         defaultValues: {
             title: categoryToEdit?.title || "",
             type: categoryToEdit?.type || "treatment",
@@ -134,14 +134,21 @@ export function CategoryDialog({ open, onOpenChange, categoryToEdit, onSuccess }
                                 </FormItem>
                             )}
                         />
+
+
                         <FormField
                             control={form.control}
                             name="image_url"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Image URL</FormLabel>
+                                    <FormLabel>Category Image</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="https://..." {...field} />
+                                        <ImageUpload
+                                            value={field.value ? [field.value] : []}
+                                            onChange={(urls) => field.onChange(urls[0] || "")}
+                                            onRemove={() => field.onChange("")}
+                                            disabled={loading}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

@@ -1,4 +1,4 @@
-"use client"
+import { ImageUpload } from "@/components/admin/image-upload"
 
 import { useState } from "react"
 import { useForm } from "react-hook-form"
@@ -14,6 +14,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog"
+
 import {
     Form,
     FormControl,
@@ -46,7 +47,7 @@ export function VideoDialog({ open, onOpenChange, videoToEdit, onSuccess }: Vide
     const supabase = createClient()
 
     const form = useForm<z.infer<typeof videoSchema>>({
-        resolver: zodResolver(videoSchema),
+        resolver: zodResolver(videoSchema) as any,
         defaultValues: {
             title: videoToEdit?.title || "",
             video_url: videoToEdit?.video_url || "",
@@ -120,14 +121,23 @@ export function VideoDialog({ open, onOpenChange, videoToEdit, onSuccess }: Vide
                                 </FormItem>
                             )}
                         />
+
+
+
+
                         <FormField
                             control={form.control}
                             name="thumbnail_url"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Thumbnail URL (Optional)</FormLabel>
+                                    <FormLabel>Thumbnail Image</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="https://..." {...field} />
+                                        <ImageUpload
+                                            value={field.value ? [field.value] : []}
+                                            onChange={(urls) => field.onChange(urls[0] || "")}
+                                            onRemove={() => field.onChange("")}
+                                            disabled={loading}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

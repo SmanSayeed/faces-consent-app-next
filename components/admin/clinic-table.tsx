@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Check, X, FileText, ExternalLink } from "lucide-react"
+import { Check, FileText } from "lucide-react"
 
 interface Profile {
     email: string
@@ -34,9 +34,21 @@ interface ClinicTableProps {
     clinics: ClinicInfo[]
     isLoading: boolean
     onVerify: (id: string, profileId: string, status: boolean) => void
+    onEdit?: (clinic: any) => void
+    onDelete?: (id: string) => void
 }
 
-export function ClinicTable({ clinics, isLoading, onVerify }: ClinicTableProps) {
+import { MoreHorizontal } from "lucide-react"
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
+export function ClinicTable({ clinics, isLoading, onVerify, onEdit, onDelete }: ClinicTableProps) {
     if (isLoading) {
         return <div>Loading clinics...</div>
     }
@@ -92,21 +104,51 @@ export function ClinicTable({ clinics, isLoading, onVerify }: ClinicTableProps) 
                                     )}
                                 </TableCell>
                                 <TableCell className="text-right">
-                                    {!isVerified && (
-                                        <div className="flex justify-end gap-2">
+                                    <div className="flex items-center justify-end gap-2">
+                                        {!isVerified && (
                                             <Button size="sm" variant="outline" className="h-8 w-8 p-0 border-green-200 hover:bg-green-50 hover:text-green-600" onClick={() => onVerify(clinic.id, clinic.profile_id, true)}>
                                                 <Check className="h-4 w-4" />
                                             </Button>
-                                            <Button size="sm" variant="outline" className="h-8 w-8 p-0 border-red-200 hover:bg-red-50 hover:text-red-600" onClick={() => onVerify(clinic.id, clinic.profile_id, false)}>
-                                                <X className="h-4 w-4" />
-                                            </Button>
-                                        </div>
-                                    )}
-                                    {isVerified && (
-                                        <Button size="sm" variant="ghost" className="h-8 w-8 p-0" disabled>
-                                            <Check className="h-4 w-4 text-green-500" />
-                                        </Button>
-                                    )}
+                                        )}
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button variant="ghost" className="h-8 w-8 p-0">
+                                                    <span className="sr-only">Open menu</span>
+                                                    <MoreHorizontal className="h-4 w-4" />
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent align="end">
+                                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                                <DropdownMenuItem
+                                                    onClick={() => navigator.clipboard.writeText(clinic.profile_id)}
+                                                >
+                                                    Copy Owner ID
+                                                </DropdownMenuItem>
+                                                <DropdownMenuSeparator />
+                                                {onEdit && (
+                                                    <DropdownMenuItem onClick={() => onEdit(clinic)}>Edit Clinic Info</DropdownMenuItem>
+                                                )}
+                                                {!isVerified && (
+                                                    <DropdownMenuItem onClick={() => onVerify(clinic.id, clinic.profile_id, true)}>
+                                                        Verify Clinic
+                                                    </DropdownMenuItem>
+                                                )}
+                                                {isVerified && (
+                                                    <DropdownMenuItem onClick={() => onVerify(clinic.id, clinic.profile_id, false)} className="text-orange-600">
+                                                        Revoke Logic
+                                                    </DropdownMenuItem>
+                                                )}
+                                                {onDelete && (
+                                                    <DropdownMenuItem
+                                                        className="text-red-600"
+                                                        onClick={() => onDelete(clinic.profile_id)} // Delete User/Profile
+                                                    >
+                                                        Delete Clinic User
+                                                    </DropdownMenuItem>
+                                                )}
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </div>
                                 </TableCell>
                             </TableRow>
                         )

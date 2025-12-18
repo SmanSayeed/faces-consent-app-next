@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { createClient } from "@/lib/supabase"
 import { Button } from "@/components/ui/button"
 import {
@@ -16,6 +16,7 @@ import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { toast } from "sonner"
 import { Loader2 } from "lucide-react"
+import ImageUpload from "@/components/admin/image-upload"
 
 interface UserDialogProps {
     open: boolean
@@ -23,66 +24,67 @@ interface UserDialogProps {
     onSuccess: () => void
 }
 
-export function UserDialog({ open, onOpenChange, onSuccess }: UserDialogProps) {
+export function UserDialog({ open, onOpenChange, onSuccess, user }: UserDialogProps & { user?: any }) {
     const [loading, setLoading] = useState(false)
     const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("11112222") // Default for ease
+    const [password, setPassword] = useState("11112222")
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
     const [isClinic, setIsClinic] = useState(false)
+    const [isAdmin, setIsAdmin] = useState(false)
+    const [imageUrl, setImageUrl] = useState("")
 
-    const supabase = createClient()
+    // Populate form when user prop changes
+    useEffect(() => {
+        if (user) {
+            setEmail(user.email || "")
+            setFirstName(user.first_name || "")
+            setLastName(user.last_name || "")
+            setIsClinic(user.is_clinic || false)
+            setIsAdmin(user.is_admin || false)
+            setImageUrl(user.image_url || "")
+            setPassword("") // Don't show password
+        } else {
+            // Reset
+            setEmail("")
+            setPassword("11112222")
+            setFirstName("")
+            setLastName("")
+            setIsClinic(false)
+            setIsAdmin(false)
+            setImageUrl("")
+        }
+    }, [user, open])
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setLoading(true)
 
         try {
-            // 1. Create User in Auth (Simulated / or using Admin API if available)
-            // Note: On client side without Service Role, we can't create users directly into Auth easily
-            // UNLESS 'allow public signups' is on. 
-            // However, Supabase Admin Client (Service Role) is needed for 'Create User without login'.
-
-            // WORKAROUND FOR CLIENT DEMO: 
-            // We'll call a server action or API route ideally, but user asked for "No complex changes".
-            // We will attempt client-side signUp. This logs the CURRENT user out effectively in generic apps,
-            // but we are in a 'Simple Login' mode (Cookie based) so Supabase session might not matter!
-
-            // Actually, best way to 'Create User' from Admin panel without logging out is to use an API Route.
-            // But let's try a direct INSERT to 'profiles' first? No, profiles reference auth.users.
-
-            // To stick to "Simple" and "Simulated" for this specific user request who is bypassing auth:
-            // We will try to rely on a backend script OR just show success if its a demo.
-            // BUT user wants CRUD. 
-
-            // REAL IMPLEMENTATION: We need an API route.
-            // I'll create a simple API route for this.
-
-            const response = await fetch('/api/admin/create-user', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password, firstName, lastName, isClinic })
-            })
-
-            const data = await response.json()
-
-            if (!response.ok) {
-                throw new Error(data.error || "Failed to create user")
+            const userData = {
+                first_name: firstName,
+                last_name: lastName,
+                email,
+                is_clinic: isClinic,
+                is_admin: isAdmin,
+                image_url: imageUrl,
+                password: password ? password : undefined,
             }
 
-            toast.success("User created successfully")
-            onOpenChange(false)
+            if (user) {
+                // Edit
+                const { updateUser } = await import("@/actions/admin-users")
+                await updateUser(user.id, userData)
+            } else {
+                // Create
+                const { createUser } = await import("@/actions/admin-users")
+                await createUser(userData)
+            }
             onSuccess()
-
-            // Reset form
-            setEmail("")
-            setFirstName("")
-            setLastName("")
-            setIsClinic(false)
-
-        } catch (error: any) {
+            onOpenChange(false)
+        } catch (error) {
             console.error(error)
-            toast.error(error.message)
+            toast.error("Failed to save user")
         } finally {
             setLoading(false)
         }
@@ -90,65 +92,93 @@ export function UserDialog({ open, onOpenChange, onSuccess }: UserDialogProps) {
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[500px] max-h-[85vh] overflow-y-auto">
                 <DialogHeader>
-                    <DialogTitle>Create New User</DialogTitle>
+                    <DialogTitle>{user ? "Edit User" : "Add User"}</DialogTitle>
                     <DialogDescription>
-                        Add a new user or clinic to the system.
+                        {user ? "Make changes to the user profile here." : "Add a new user to the system."}
                     </DialogDescription>
                 </DialogHeader>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="grid gap-2">
-                        <Label htmlFor="email">Email</Label>
-                        <Input
-                            id="email"
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <div className="grid gap-2">
-                        <Label htmlFor="password">Password</Label>
-                        <Input
-                            id="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
+                <form onSubmit={handleSubmit}>
+                    <div className="grid gap-4 py-4">
                         <div className="grid gap-2">
-                            <Label htmlFor="firstName">First Name</Label>
+                            <Label>Profile Image</Label>
+                            <ImageUpload
+                                value={imageUrl ? [imageUrl] : []}
+                                onChange={(urls) => setImageUrl(urls[0] || "")}
+                                onRemove={() => setImageUrl("")}
+                            />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="grid gap-2">
+                                <Label htmlFor="firstName">First Name</Label>
+                                <Input
+                                    id="firstName"
+                                    value={firstName}
+                                    onChange={(e) => setFirstName(e.target.value)}
+                                    placeholder="John"
+                                    required
+                                />
+                            </div>
+                            <div className="grid gap-2">
+                                <Label htmlFor="lastName">Last Name</Label>
+                                <Input
+                                    id="lastName"
+                                    value={lastName}
+                                    onChange={(e) => setLastName(e.target.value)}
+                                    placeholder="Doe"
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className="grid gap-2">
+                            <Label htmlFor="email">Email</Label>
                             <Input
-                                id="firstName"
-                                value={firstName}
-                                onChange={(e) => setFirstName(e.target.value)}
+                                id="email"
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="john@example.com"
                                 required
                             />
                         </div>
                         <div className="grid gap-2">
-                            <Label htmlFor="lastName">Last Name</Label>
+                            <Label htmlFor="password">Password {user && "(Leave empty to keep current)"}</Label>
                             <Input
-                                id="lastName"
-                                value={lastName}
-                                onChange={(e) => setLastName(e.target.value)}
-                                required
+                                id="password"
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="••••••••"
+                                required={!user}
                             />
                         </div>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                        <Checkbox
-                            id="isClinic"
-                            checked={isClinic}
-                            onCheckedChange={(checked) => setIsClinic(checked as boolean)}
-                        />
-                        <Label htmlFor="isClinic">Is variable Clinic?</Label>
+                        <div className="flex items-center space-x-2">
+                            <Checkbox
+                                id="isClinic"
+                                checked={isClinic}
+                                onCheckedChange={(checked) => setIsClinic(checked as boolean)}
+                            />
+                            <Label htmlFor="isClinic">Is Clinic User?</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                            <Checkbox
+                                id="isAdmin"
+                                checked={isAdmin}
+                                onCheckedChange={(checked) => setIsAdmin(checked as boolean)}
+                            />
+                            <Label htmlFor="isAdmin">Is Admin User?</Label>
+                        </div>
+                        {isClinic && (
+                            <div className="rounded-md bg-muted p-3 text-sm text-muted-foreground">
+                                <p>Marking this user as a Clinic will allow them to be configured in the Clinics section.</p>
+                            </div>
+                        )}
                     </div>
                     <DialogFooter>
                         <Button type="submit" disabled={loading}>
                             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                            Create User
+                            {user ? "Save Changes" : "Create User"}
                         </Button>
                     </DialogFooter>
                 </form>

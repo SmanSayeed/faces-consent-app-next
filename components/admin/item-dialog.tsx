@@ -1,4 +1,4 @@
-"use client"
+import { ImageUpload } from "@/components/admin/image-upload"
 
 import { useState } from "react"
 import { useForm } from "react-hook-form"
@@ -57,7 +57,7 @@ export function ItemDialog({ open, onOpenChange, itemToEdit, categoryId, regions
     const supabase = createClient()
 
     const form = useForm<z.infer<typeof itemSchema>>({
-        resolver: zodResolver(itemSchema),
+        resolver: zodResolver(itemSchema) as any,
         defaultValues: {
             title: itemToEdit?.title || "",
             description: itemToEdit?.description || "",
@@ -179,14 +179,21 @@ export function ItemDialog({ open, onOpenChange, itemToEdit, categoryId, regions
                                 )}
                             />
                         </div>
+
+
                         <FormField
                             control={form.control}
                             name="image_url"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Image URL</FormLabel>
+                                    <FormLabel>Item Image</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="https://..." {...field} />
+                                        <ImageUpload
+                                            value={field.value ? [field.value] : []}
+                                            onChange={(urls) => field.onChange(urls[0] || "")}
+                                            onRemove={() => field.onChange("")}
+                                            disabled={loading}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

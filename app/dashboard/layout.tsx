@@ -41,10 +41,26 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
     if (!authorized) return null
 
-    const menuItems = [
+    interface MenuItem {
+        icon: any
+        label: string
+        href: string
+        children?: { label: string; href: string }[]
+    }
+
+    const menuItems: MenuItem[] = [
         { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
-        { icon: Users, label: "Users", href: "/dashboard/users" },
-        { icon: Building2, label: "Clinics", href: "/dashboard/clinics" },
+        {
+            icon: Users,
+            label: "User Management",
+            href: "/dashboard/users-group", // Dummy parent href
+            children: [
+                { label: "Admins", href: "/dashboard/admins" },
+                { label: "Normal Users", href: "/dashboard/users" },
+                { label: "Clinics", href: "/dashboard/clinics" }
+            ]
+        },
+        // Removed separate Clinics item
         { icon: Layers, label: "Categories", href: "/dashboard/categories" },
         { icon: Megaphone, label: "Marketing", href: "/dashboard/marketing" },
         { icon: Video, label: "Videos", href: "/dashboard/videos" },
@@ -79,6 +95,38 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     <nav className="flex-1 overflow-y-auto p-4 space-y-2">
                         {menuItems.map((item) => {
                             const Icon = item.icon
+                            const hasChildren = item.children && item.children.length > 0
+                            const isParentActive = pathname?.startsWith(item.href) && item.href !== '/dashboard'
+
+                            if (hasChildren) {
+                                return (
+                                    <div key={item.href} className="space-y-1">
+                                        <div className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${isParentActive
+                                            ? "bg-primary/5 text-primary font-medium"
+                                            : "text-muted-foreground"
+                                            }`}>
+                                            <Icon className="w-5 h-5" />
+                                            {item.label}
+                                        </div>
+                                        <div className="pl-12 space-y-1">
+                                            {item.children?.map(child => (
+                                                <Link
+                                                    key={child.href}
+                                                    href={child.href}
+                                                    className={`block py-2 text-sm transition-colors ${pathname === child.href
+                                                        ? "text-primary font-medium"
+                                                        : "text-muted-foreground hover:text-foreground"
+                                                        }`}
+                                                    onClick={() => setSidebarOpen(false)}
+                                                >
+                                                    {child.label}
+                                                </Link>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )
+                            }
+
                             const isActive = pathname === item.href || pathname?.startsWith(item.href) && item.href !== '/dashboard'
                             return (
                                 <Link

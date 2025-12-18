@@ -1,0 +1,125 @@
+admin_design/app/(public)/layout.tsx(1,20): error TS2307: Cannot find module '@/components/header' or its corresponding type declarations.
+admin_design/app/(public)/layout.tsx(2,20): error TS2307: Cannot find module '@/components/footer' or its corresponding type declarations.
+admin_design/app/(public)/layout.tsx(3,27): error TS2307: Cannot find module '@/components/whatsapp-float' or its corresponding type declarations.
+admin_design/app/(public)/page.tsx(1,25): error TS2307: Cannot find module '@/components/hero-section' or its corresponding type declarations.
+admin_design/app/(public)/page.tsx(2,29): error TS2307: Cannot find module '@/components/services-section' or its corresponding type declarations.
+admin_design/app/(public)/page.tsx(3,25): error TS2307: Cannot find module '@/components/why-choose-us' or its corresponding type declarations.
+admin_design/app/(public)/page.tsx(4,26): error TS2307: Cannot find module '@/components/projects-grid' or its corresponding type declarations.
+admin_design/app/(public)/page.tsx(5,33): error TS2307: Cannot find module '@/components/testimonials-section' or its corresponding type declarations.
+admin_design/app/(public)/page.tsx(6,28): error TS2307: Cannot find module '@/components/contact-section' or its corresponding type declarations.
+admin_design/app/(public)/projects/page.tsx(1,26): error TS2307: Cannot find module '@/components/projects-grid' or its corresponding type declarations.
+admin_design/app/admin/settings/page.tsx(7,8): error TS2613: Module '"L:/android/test/backend-next/faces-consent-app-next/components/admin/image-upload"' has no default export. Did you mean to use 'import { ImageUpload } from "L:/android/test/backend-next/faces-consent-app-next/components/admin/image-upload"' instead?
+admin_design/app/admin/settings/page.tsx(93,44): error TS7006: Parameter 'url' implicitly has an 'any' type.
+admin_design/app/admin/testimonials/page.tsx(7,8): error TS2613: Module '"L:/android/test/backend-next/faces-consent-app-next/components/admin/image-upload"' has no default export. Did you mean to use 'import { ImageUpload } from "L:/android/test/backend-next/faces-consent-app-next/components/admin/image-upload"' instead?
+admin_design/app/admin/testimonials/page.tsx(236,33): error TS7006: Parameter 'url' implicitly has an 'any' type.
+admin_design/app/admin/testimonials/page.tsx(254,79): error TS2304: Cannot find name 'Save'.
+admin_design/components/hero-section.tsx(55,55): error TS2322: Type '{ hidden: { opacity: number; y: number; }; visible: { opacity: number; y: number; transition: { duration: number; ease: string; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ opacity: number; y: number; transition: { duration: number; ease: string; }; }' is not assignable to type 'Variant'.
+      Type '{ opacity: number; y: number; transition: { duration: number; ease: string; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ opacity: number; y: number; transition: { duration: number; ease: string; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ duration: number; ease: string; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ duration: number; ease: string; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ duration: number; ease: string; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'ease' are incompatible.
+                    Type 'string' is not assignable to type 'Easing | Easing[] | undefined'.
+admin_design/components/hero-section.tsx(57,15): error TS2322: Type '{ hidden: { opacity: number; y: number; }; visible: { opacity: number; y: number; transition: { duration: number; ease: string; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ opacity: number; y: number; transition: { duration: number; ease: string; }; }' is not assignable to type 'Variant'.
+      Type '{ opacity: number; y: number; transition: { duration: number; ease: string; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ opacity: number; y: number; transition: { duration: number; ease: string; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ duration: number; ease: string; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ duration: number; ease: string; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ duration: number; ease: string; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'ease' are incompatible.
+                    Type 'string' is not assignable to type 'Easing | Easing[] | undefined'.
+admin_design/components/hero-section.tsx(69,23): error TS2322: Type '{ hidden: { opacity: number; y: number; }; visible: { opacity: number; y: number; transition: { duration: number; ease: string; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ opacity: number; y: number; transition: { duration: number; ease: string; }; }' is not assignable to type 'Variant'.
+      Type '{ opacity: number; y: number; transition: { duration: number; ease: string; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ opacity: number; y: number; transition: { duration: number; ease: string; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ duration: number; ease: string; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ duration: number; ease: string; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ duration: number; ease: string; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'ease' are incompatible.
+                    Type 'string' is not assignable to type 'Easing | Easing[] | undefined'.
+admin_design/components/hero-section.tsx(74,3): error TS2322: Type '{ hidden: { opacity: number; y: number; }; visible: { opacity: number; y: number; transition: { duration: number; ease: string; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ opacity: number; y: number; transition: { duration: number; ease: string; }; }' is not assignable to type 'Variant'.
+      Type '{ opacity: number; y: number; transition: { duration: number; ease: string; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ opacity: number; y: number; transition: { duration: number; ease: string; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ duration: number; ease: string; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ duration: number; ease: string; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ duration: number; ease: string; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'ease' are incompatible.
+                    Type 'string' is not assignable to type 'Easing | Easing[] | undefined'.
+admin_design/components/hero-section.tsx(109,23): error TS2322: Type '{ hidden: { opacity: number; y: number; }; visible: { opacity: number; y: number; transition: { duration: number; ease: string; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ opacity: number; y: number; transition: { duration: number; ease: string; }; }' is not assignable to type 'Variant'.
+      Type '{ opacity: number; y: number; transition: { duration: number; ease: string; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ opacity: number; y: number; transition: { duration: number; ease: string; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ duration: number; ease: string; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ duration: number; ease: string; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ duration: number; ease: string; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'ease' are incompatible.
+                    Type 'string' is not assignable to type 'Easing | Easing[] | undefined'.
+admin_design/components/services-section.tsx(54,44): error TS2322: Type '{ hidden: { opacity: number; y: number; }; visible: { opacity: number; y: number; transition: { duration: number; ease: string; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ opacity: number; y: number; transition: { duration: number; ease: string; }; }' is not assignable to type 'Variant'.
+      Type '{ opacity: number; y: number; transition: { duration: number; ease: string; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ opacity: number; y: number; transition: { duration: number; ease: string; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ duration: number; ease: string; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ duration: number; ease: string; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ duration: number; ease: string; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'ease' are incompatible.
+                    Type 'string' is not assignable to type 'Easing | Easing[] | undefined'.
+admin_design/components/ui/chart.tsx(109,3): error TS2339: Property 'payload' does not exist on type 'Omit<Props<ValueType, NameType>, PropertiesReadFromContext> & { active?: boolean | undefined; allowEscapeViewBox?: AllowInDimension | undefined; ... 17 more ...; wrapperStyle?: CSSProperties | undefined; } & ClassAttributes<...> & HTMLAttributes<...> & { ...; }'.
+admin_design/components/ui/chart.tsx(114,3): error TS2339: Property 'label' does not exist on type 'Omit<Props<ValueType, NameType>, PropertiesReadFromContext> & { active?: boolean | undefined; allowEscapeViewBox?: AllowInDimension | undefined; ... 17 more ...; wrapperStyle?: CSSProperties | undefined; } & ClassAttributes<...> & HTMLAttributes<...> & { ...; }'.
+admin_design/components/ui/chart.tsx(182,23): error TS7006: Parameter 'item' implicitly has an 'any' type.
+admin_design/components/ui/chart.tsx(182,29): error TS7006: Parameter 'index' implicitly has an 'any' type.
+admin_design/components/ui/chart.tsx(260,39): error TS2344: Type '"verticalAlign" | "payload"' does not satisfy the constraint '"string" | "path" | "name" | "id" | "filter" | "fill" | "values" | "type" | "role" | "d" | "k" | "r" | "x" | "y" | "z" | "order" | "children" | "min" | "max" | "style" | "clipPath" | ... 425 more ... | "onBBoxUpdate"'.
+  Type '"payload"' is not assignable to type '"string" | "path" | "name" | "id" | "filter" | "fill" | "values" | "type" | "role" | "d" | "k" | "r" | "x" | "y" | "z" | "order" | "children" | "min" | "max" | "style" | "clipPath" | ... 425 more ... | "onBBoxUpdate"'.
+admin_design/components/ui/chart.tsx(266,17): error TS2339: Property 'length' does not exist on type '{}'.
+admin_design/components/ui/chart.tsx(278,16): error TS2339: Property 'map' does not exist on type '{}'.
+admin_design/components/ui/chart.tsx(278,21): error TS7006: Parameter 'item' implicitly has an 'any' type.
+admin_design/components/ui/resizable.tsx(12,51): error TS2339: Property 'PanelGroup' does not exist on type 'typeof import("L:/android/test/backend-next/faces-consent-app-next/node_modules/.pnpm/react-resizable-panels@4.0._1701e5fd82256dcb75040c93e87e0ce1/node_modules/react-resizable-panels/dist/react-resizable-panels")'.
+admin_design/components/ui/resizable.tsx(14,25): error TS2339: Property 'PanelGroup' does not exist on type 'typeof import("L:/android/test/backend-next/faces-consent-app-next/node_modules/.pnpm/react-resizable-panels@4.0._1701e5fd82256dcb75040c93e87e0ce1/node_modules/react-resizable-panels/dist/react-resizable-panels")'.
+admin_design/components/ui/resizable.tsx(35,51): error TS2339: Property 'PanelResizeHandle' does not exist on type 'typeof import("L:/android/test/backend-next/faces-consent-app-next/node_modules/.pnpm/react-resizable-panels@4.0._1701e5fd82256dcb75040c93e87e0ce1/node_modules/react-resizable-panels/dist/react-resizable-panels")'.
+admin_design/components/ui/resizable.tsx(39,25): error TS2339: Property 'PanelResizeHandle' does not exist on type 'typeof import("L:/android/test/backend-next/faces-consent-app-next/node_modules/.pnpm/react-resizable-panels@4.0._1701e5fd82256dcb75040c93e87e0ce1/node_modules/react-resizable-panels/dist/react-resizable-panels")'.
+admin_design/components/ui/resizable.tsx(52,26): error TS2339: Property 'PanelResizeHandle' does not exist on type 'typeof import("L:/android/test/backend-next/faces-consent-app-next/node_modules/.pnpm/react-resizable-panels@4.0._1701e5fd82256dcb75040c93e87e0ce1/node_modules/react-resizable-panels/dist/react-resizable-panels")'.
+admin_design/components/ui/sidebar.tsx(8,29): error TS2307: Cannot find module '@/hooks/use-mobile' or its corresponding type declarations.
+admin_design/components/ui/toaster.tsx(3,26): error TS2307: Cannot find module '@/hooks/use-toast' or its corresponding type declarations.
+admin_design/components/ui/toaster.tsx(18,31): error TS7031: Binding element 'id' implicitly has an 'any' type.
+admin_design/components/ui/toaster.tsx(18,35): error TS7031: Binding element 'title' implicitly has an 'any' type.
+admin_design/components/ui/toaster.tsx(18,42): error TS7031: Binding element 'description' implicitly has an 'any' type.
+admin_design/components/ui/toaster.tsx(18,55): error TS7031: Binding element 'action' implicitly has an 'any' type.
+app/dashboard/settings/page.tsx(7,8): error TS2613: Module '"L:/android/test/backend-next/faces-consent-app-next/components/admin/image-upload"' has no default export. Did you mean to use 'import { ImageUpload } from "L:/android/test/backend-next/faces-consent-app-next/components/admin/image-upload"' instead?
+app/dashboard/settings/page.tsx(93,44): error TS7006: Parameter 'url' implicitly has an 'any' type.
+components/admin/item-table.tsx(97,83): error TS2339: Property 'category_id' does not exist on type 'Item'.
+components/admin/user-dialog.tsx(26,104): error TS2503: Cannot find namespace 'JSX'.
+components/ui/chart.tsx(109,3): error TS2339: Property 'payload' does not exist on type 'Omit<Props<ValueType, NameType>, PropertiesReadFromContext> & { active?: boolean | undefined; allowEscapeViewBox?: AllowInDimension | undefined; ... 17 more ...; wrapperStyle?: CSSProperties | undefined; } & ClassAttributes<...> & HTMLAttributes<...> & { ...; }'.
+components/ui/chart.tsx(114,3): error TS2339: Property 'label' does not exist on type 'Omit<Props<ValueType, NameType>, PropertiesReadFromContext> & { active?: boolean | undefined; allowEscapeViewBox?: AllowInDimension | undefined; ... 17 more ...; wrapperStyle?: CSSProperties | undefined; } & ClassAttributes<...> & HTMLAttributes<...> & { ...; }'.
+components/ui/chart.tsx(182,23): error TS7006: Parameter 'item' implicitly has an 'any' type.
+components/ui/chart.tsx(182,29): error TS7006: Parameter 'index' implicitly has an 'any' type.
+components/ui/chart.tsx(260,39): error TS2344: Type '"verticalAlign" | "payload"' does not satisfy the constraint '"string" | "path" | "name" | "id" | "filter" | "fill" | "values" | "type" | "role" | "d" | "k" | "r" | "x" | "y" | "z" | "order" | "children" | "min" | "max" | "style" | "clipPath" | ... 425 more ... | "onBBoxUpdate"'.
+  Type '"payload"' is not assignable to type '"string" | "path" | "name" | "id" | "filter" | "fill" | "values" | "type" | "role" | "d" | "k" | "r" | "x" | "y" | "z" | "order" | "children" | "min" | "max" | "style" | "clipPath" | ... 425 more ... | "onBBoxUpdate"'.
+components/ui/chart.tsx(266,17): error TS2339: Property 'length' does not exist on type '{}'.
+components/ui/chart.tsx(278,16): error TS2339: Property 'map' does not exist on type '{}'.
+components/ui/chart.tsx(278,21): error TS7006: Parameter 'item' implicitly has an 'any' type.
+components/ui/resizable.tsx(12,51): error TS2339: Property 'PanelGroup' does not exist on type 'typeof import("L:/android/test/backend-next/faces-consent-app-next/node_modules/.pnpm/react-resizable-panels@4.0._1701e5fd82256dcb75040c93e87e0ce1/node_modules/react-resizable-panels/dist/react-resizable-panels")'.
+components/ui/resizable.tsx(14,25): error TS2339: Property 'PanelGroup' does not exist on type 'typeof import("L:/android/test/backend-next/faces-consent-app-next/node_modules/.pnpm/react-resizable-panels@4.0._1701e5fd82256dcb75040c93e87e0ce1/node_modules/react-resizable-panels/dist/react-resizable-panels")'.
+components/ui/resizable.tsx(35,51): error TS2339: Property 'PanelResizeHandle' does not exist on type 'typeof import("L:/android/test/backend-next/faces-consent-app-next/node_modules/.pnpm/react-resizable-panels@4.0._1701e5fd82256dcb75040c93e87e0ce1/node_modules/react-resizable-panels/dist/react-resizable-panels")'.
+components/ui/resizable.tsx(39,25): error TS2339: Property 'PanelResizeHandle' does not exist on type 'typeof import("L:/android/test/backend-next/faces-consent-app-next/node_modules/.pnpm/react-resizable-panels@4.0._1701e5fd82256dcb75040c93e87e0ce1/node_modules/react-resizable-panels/dist/react-resizable-panels")'.
+components/ui/resizable.tsx(52,26): error TS2339: Property 'PanelResizeHandle' does not exist on type 'typeof import("L:/android/test/backend-next/faces-consent-app-next/node_modules/.pnpm/react-resizable-panels@4.0._1701e5fd82256dcb75040c93e87e0ce1/node_modules/react-resizable-panels/dist/react-resizable-panels")'.
+components/ui/sidebar.tsx(8,29): error TS2307: Cannot find module '@/hooks/use-mobile' or its corresponding type declarations.
+components/ui/toaster.tsx(3,26): error TS2307: Cannot find module '@/hooks/use-toast' or its corresponding type declarations.
+components/ui/toaster.tsx(18,31): error TS7031: Binding element 'id' implicitly has an 'any' type.
+components/ui/toaster.tsx(18,35): error TS7031: Binding element 'title' implicitly has an 'any' type.
+components/ui/toaster.tsx(18,42): error TS7031: Binding element 'description' implicitly has an 'any' type.
+components/ui/toaster.tsx(18,55): error TS7031: Binding element 'action' implicitly has an 'any' type.
