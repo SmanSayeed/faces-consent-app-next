@@ -24,7 +24,7 @@ export async function getContactMessages() {
     }
 
     // 2. Otherwise, try standard Supabase Auth (respecting RLS)
-    const supabase = await createClient()
+    const supabase = createClient()
     const { data, error } = await supabase
         .from("contact_messages")
         .select("*")
