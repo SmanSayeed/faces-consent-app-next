@@ -46,6 +46,13 @@ interface UserTableProps {
 }
 
 export function UserTable({ users, isLoading, onEdit, onDelete }: UserTableProps) {
+    const getAvatarUrl = (url?: string) => {
+        if (!url || url === "") return "/placeholder-user.jpg";
+        // If it's a dummy path that we know doesn't exist, return a valid placeholder
+        if (url.includes('avatars/')) return "/placeholder-user.jpg";
+        return url;
+    };
+
     if (isLoading) {
         return <div>Loading users...</div>
     }
@@ -69,9 +76,11 @@ export function UserTable({ users, isLoading, onEdit, onDelete }: UserTableProps
                         <TableRow key={user.id}>
                             <TableCell className="font-medium">
                                 <div className="flex items-center gap-2">
-                                    <Avatar className="h-8 w-8">
-                                        <AvatarImage src={user.image_url} alt={user.first_name} />
-                                        <AvatarFallback>{user.first_name?.[0]}{user.last_name?.[0]}</AvatarFallback>
+                                    <Avatar className="h-8 w-8" data-image-url={user.image_url}>
+                                        <AvatarImage src={getAvatarUrl(user.image_url)} alt={user.first_name} />
+                                        <AvatarFallback className="bg-primary/10 text-primary">
+                                            {user.first_name?.[0]}{user.last_name?.[0]}
+                                        </AvatarFallback>
                                     </Avatar>
                                     <span>{user.first_name} {user.last_name}</span>
                                 </div>

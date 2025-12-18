@@ -57,8 +57,9 @@ export async function createUser(data: any) {
             first_name: data.first_name,
             last_name: data.last_name,
             is_clinic: data.is_clinic === true,
-            active_as_clinic: data.is_clinic === true,
+            act_as_clinic: data.is_clinic === true && data.act_as_clinic === true,
             is_admin: data.is_admin === true,
+            status: data.status === true,
             image_url: data.image_url
         }
 
@@ -110,9 +111,10 @@ export async function updateUser(id: string, data: any) {
             last_name: data.last_name,
             email: data.email, // Note: updating email in profile doesn't update auth
             is_clinic: data.is_clinic,
-            active_as_clinic: data.active_as_clinic,
+            act_as_clinic: data.act_as_clinic,
             image_url: data.image_url,
-            is_admin: data.is_admin // Add this
+            is_admin: data.is_admin,
+            status: data.status
         })
         .eq("id", id)
 
@@ -226,6 +228,24 @@ export async function updateClinicInfo(profileId: string, data: any) {
     }
 
     if (error) return { success: false, error: error.message }
+
+    // Also update profile status and acts_as_clinic logic if passed
+    if (data.status !== undefined || data.act_as_clinic !== undefined || data.is_clinic !== undefined || data.active_as_clinic !== undefined) {
+        const profileUpdate: any = {}
+        if (data.status !== undefined) profileUpdate.status = data.status
+        if (data.act_as_clinic !== undefined) profileUpdate.act_as_clinic = data.act_as_clinic
+        if (data.is_clinic !== undefined) profileUpdate.is_clinic = data.is_clinic
+        if (data.active_as_clinic !== undefined) profileUpdate.active_as_clinic = data.active_as_clinic
+
+        if (Object.keys(profileUpdate).length > 0) {
+            const { error: profileError } = await supabase
+                .from("profiles")
+                .update(profileUpdate)
+                .eq("id", profileId)
+
+            if (profileError) console.error("Profile update from clinic edit failed", profileError)
+        }
+    }
 
     revalidatePath('/dashboard/users')
     revalidatePath('/dashboard/clinics')

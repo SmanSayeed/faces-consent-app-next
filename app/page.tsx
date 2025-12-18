@@ -52,8 +52,8 @@ export default function LoginPage() {
       document.cookie = "admin_session=true; path=/; max-age=86400"; // 1 day
 
       toast.success("Login successful");
-      router.push("/dashboard");
-      router.refresh();
+      // Force full reload to ensure cookies are sent to server and middleware picks up the session
+      window.location.href = "/dashboard";
 
     } catch (err) {
       console.error(err);

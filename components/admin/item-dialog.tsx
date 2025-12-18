@@ -1,6 +1,6 @@
 import { ImageUpload } from "@/components/admin/image-upload"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
@@ -59,13 +59,33 @@ export function ItemDialog({ open, onOpenChange, itemToEdit, categoryId, regions
     const form = useForm<z.infer<typeof itemSchema>>({
         resolver: zodResolver(itemSchema) as any,
         defaultValues: {
-            title: itemToEdit?.title || "",
-            description: itemToEdit?.description || "",
-            price: itemToEdit?.price || 0,
-            image_url: itemToEdit?.image_url || "",
-            region_id: itemToEdit?.region_id ? String(itemToEdit.region_id) : "all",
+            title: "",
+            description: "",
+            price: 0,
+            image_url: "",
+            region_id: "all",
         },
     })
+
+    useEffect(() => {
+        if (itemToEdit) {
+            form.reset({
+                title: itemToEdit.title,
+                description: itemToEdit.description || "",
+                price: itemToEdit.price,
+                image_url: itemToEdit.image_url,
+                region_id: itemToEdit.region_id ? String(itemToEdit.region_id) : "all",
+            })
+        } else {
+            form.reset({
+                title: "",
+                description: "",
+                price: 0,
+                image_url: "",
+                region_id: "all",
+            })
+        }
+    }, [itemToEdit, form])
 
     const onSubmit = async (values: z.infer<typeof itemSchema>) => {
         setLoading(true)

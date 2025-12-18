@@ -87,8 +87,10 @@ export default function FileUpload({
     })
 
     const isImage = (url: string) => {
-        return url.match(/\.(jpeg|jpg|gif|png|webp)$/) != null ||
-            url.includes('images') && !url.endsWith('.pdf') // heuristic if no extension
+        if (!url) return false
+        const cleanUrl = url.split('?')[0].toLowerCase()
+        return cleanUrl.match(/\.(jpeg|jpg|gif|png|webp|avif)$/) != null ||
+            (url.includes('/storage/v1/object/public/images/') && !cleanUrl.endsWith('.pdf'))
     }
 
     return (

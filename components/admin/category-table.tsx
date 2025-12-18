@@ -29,6 +29,12 @@ interface CategoryTableProps {
 }
 
 export function CategoryTable({ categories, isLoading, onEdit, onDelete }: CategoryTableProps) {
+    const getImageUrl = (url: string | null) => {
+        if (!url || url === "" || url.includes('via.placeholder.com')) return "/placeholder.jpg";
+        return url;
+    };
+
+
     if (isLoading) {
         return <div>Loading categories...</div>
     }
@@ -49,11 +55,14 @@ export function CategoryTable({ categories, isLoading, onEdit, onDelete }: Categ
                     {categories.map((category) => (
                         <TableRow key={category.id}>
                             <TableCell>
-                                {category.image_url ? (
-                                    <img src={category.image_url} alt={category.title} className="w-10 h-10 rounded object-cover" />
-                                ) : (
-                                    <div className="w-10 h-10 rounded bg-gray-200" />
-                                )}
+                                <img
+                                    src={getImageUrl(category.image_url)}
+                                    alt={category.title}
+                                    className="w-10 h-10 rounded object-cover border"
+                                    onError={(e) => {
+                                        e.currentTarget.src = "/placeholder.jpg";
+                                    }}
+                                />
                             </TableCell>
                             <TableCell className="font-medium">{category.title}</TableCell>
                             <TableCell>

@@ -28,6 +28,12 @@ interface VideoTableProps {
 }
 
 export function VideoTable({ videos, isLoading, onEdit, onDelete }: VideoTableProps) {
+    const getThumbnailUrl = (url?: string | null) => {
+        if (!url || url === "" || url.includes('via.placeholder.com')) return undefined;
+        return url;
+    };
+
+
     if (isLoading) {
         return <div>Loading videos...</div>
     }
@@ -48,11 +54,18 @@ export function VideoTable({ videos, isLoading, onEdit, onDelete }: VideoTablePr
                     {videos.map((video) => (
                         <TableRow key={video.id}>
                             <TableCell>
-                                {video.thumbnail_url ? (
-                                    <img src={video.thumbnail_url} alt={video.title || "Video"} className="w-16 h-10 rounded object-cover" />
+                                {getThumbnailUrl(video.thumbnail_url) ? (
+                                    <img
+                                        src={getThumbnailUrl(video.thumbnail_url)}
+                                        alt={video.title || "Video"}
+                                        className="w-16 h-10 rounded object-cover border"
+                                        onError={(e) => {
+                                            e.currentTarget.src = "/placeholder.jpg";
+                                        }}
+                                    />
                                 ) : (
-                                    <div className="w-16 h-10 rounded bg-gray-200 flex items-center justify-center">
-                                        <Play className="h-4 w-4 text-gray-500" />
+                                    <div className="w-16 h-10 rounded bg-gray-100 flex items-center justify-center border">
+                                        <Play className="h-4 w-4 text-gray-400" />
                                     </div>
                                 )}
                             </TableCell>

@@ -17,6 +17,7 @@ interface Profile {
     first_name: string
     last_name: string
     is_clinic: boolean
+    status: boolean
 }
 
 interface ClinicInfo {
@@ -49,6 +50,18 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 export function ClinicTable({ clinics, isLoading, onVerify, onEdit, onDelete }: ClinicTableProps) {
+    const isImage = (url: string) => {
+        if (!url) return false
+        const cleanUrl = url.split('?')[0].toLowerCase()
+        return cleanUrl.match(/\.(jpeg|jpg|gif|png|webp|avif)$/) != null ||
+            url.includes('/storage/v1/object/public/images/')
+    }
+
+    const resolveDocUrl = (url: string) => {
+        if (!url) return ""
+        return url
+    }
+
     if (isLoading) {
         return <div>Loading clinics...</div>
     }
@@ -62,7 +75,8 @@ export function ClinicTable({ clinics, isLoading, onVerify, onEdit, onDelete }: 
                         <TableHead>Owner</TableHead>
                         <TableHead>License / NID</TableHead>
                         <TableHead>Documents</TableHead>
-                        <TableHead>Status</TableHead>
+                        <TableHead>Clinic Status</TableHead>
+                        <TableHead>Profile Status</TableHead>
                         <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
                 </TableHeader>
@@ -87,12 +101,27 @@ export function ClinicTable({ clinics, isLoading, onVerify, onEdit, onDelete }: 
                                     </div>
                                 </TableCell>
                                 <TableCell>
-                                    <div className="flex gap-2">
-                                        {clinic.docs_url && clinic.docs_url.map((doc, idx) => (
-                                            <a href={doc} target="_blank" rel="noopener noreferrer" key={idx} className="text-blue-500 hover:text-blue-700">
-                                                <FileText className="h-4 w-4" />
-                                            </a>
-                                        ))}
+                                    <div className="flex gap-2 items-center flex-wrap max-w-[150px]">
+                                        {clinic.docs_url && clinic.docs_url.map((doc, idx) => {
+                                            const resolvedUrl = resolveDocUrl(doc)
+                                            return (
+                                                <a
+                                                    href={resolvedUrl}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    key={idx}
+                                                    className="group relative border rounded overflow-hidden hover:border-primary transition-colors"
+                                                >
+                                                    {isImage(resolvedUrl) ? (
+                                                        <img src={resolvedUrl} alt="doc" className="w-8 h-8 object-cover" />
+                                                    ) : (
+                                                        <div className="w-8 h-8 flex items-center justify-center bg-secondary/10">
+                                                            <FileText className="h-4 w-4 text-primary" />
+                                                        </div>
+                                                    )}
+                                                </a>
+                                            )
+                                        })}
                                         {(!clinic.docs_url || clinic.docs_url.length === 0) && <span className="text-xs text-muted-foreground">No docs</span>}
                                     </div>
                                 </TableCell>
@@ -101,6 +130,13 @@ export function ClinicTable({ clinics, isLoading, onVerify, onEdit, onDelete }: 
                                         <Badge className="bg-green-500 hover:bg-green-600">Verified</Badge>
                                     ) : (
                                         <Badge variant="outline" className="text-orange-500 border-orange-200">Pending</Badge>
+                                    )}
+                                </TableCell>
+                                <TableCell>
+                                    {clinic.profiles?.status ? (
+                                        <Badge className="bg-green-500 hover:bg-green-600">Active</Badge>
+                                    ) : (
+                                        <Badge variant="destructive">Inactive</Badge>
                                     )}
                                 </TableCell>
                                 <TableCell className="text-right">
@@ -155,13 +191,13 @@ export function ClinicTable({ clinics, isLoading, onVerify, onEdit, onDelete }: 
                     })}
                     {clinics.length === 0 && (
                         <TableRow>
-                            <TableCell colSpan={6} className="h-24 text-center">
+                            <TableCell colSpan={7} className="h-24 text-center">
                                 No clinic applications found.
                             </TableCell>
                         </TableRow>
                     )}
                 </TableBody>
             </Table>
-        </div>
+        </div >
     )
 }

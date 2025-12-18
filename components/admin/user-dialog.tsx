@@ -14,6 +14,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Switch } from "@/components/ui/switch"
 import { toast } from "sonner"
 import { Loader2 } from "lucide-react"
 import ImageUpload from "@/components/admin/image-upload"
@@ -33,6 +34,8 @@ export function UserDialog({ open, onOpenChange, onSuccess, user }: UserDialogPr
     const [isClinic, setIsClinic] = useState(false)
     const [isAdmin, setIsAdmin] = useState(false)
     const [imageUrl, setImageUrl] = useState("")
+    const [status, setStatus] = useState(false)
+    const [actAsClinic, setActAsClinic] = useState(false)
 
     // Populate form when user prop changes
     useEffect(() => {
@@ -43,6 +46,8 @@ export function UserDialog({ open, onOpenChange, onSuccess, user }: UserDialogPr
             setIsClinic(user.is_clinic || false)
             setIsAdmin(user.is_admin || false)
             setImageUrl(user.image_url || "")
+            setStatus(user.status || false)
+            setActAsClinic(user.act_as_clinic || false)
             setPassword("") // Don't show password
         } else {
             // Reset
@@ -53,6 +58,8 @@ export function UserDialog({ open, onOpenChange, onSuccess, user }: UserDialogPr
             setIsClinic(false)
             setIsAdmin(false)
             setImageUrl("")
+            setStatus(false)
+            setActAsClinic(false)
         }
     }, [user, open])
 
@@ -68,6 +75,8 @@ export function UserDialog({ open, onOpenChange, onSuccess, user }: UserDialogPr
                 is_clinic: isClinic,
                 is_admin: isAdmin,
                 image_url: imageUrl,
+                status: status,
+                act_as_clinic: actAsClinic,
                 password: password ? password : undefined,
             }
 
@@ -153,27 +162,61 @@ export function UserDialog({ open, onOpenChange, onSuccess, user }: UserDialogPr
                                 required={!user}
                             />
                         </div>
-                        <div className="flex items-center space-x-2">
-                            <Checkbox
-                                id="isClinic"
-                                checked={isClinic}
-                                onCheckedChange={(checked) => setIsClinic(checked as boolean)}
-                            />
-                            <Label htmlFor="isClinic">Is Clinic User?</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                            <Checkbox
-                                id="isAdmin"
-                                checked={isAdmin}
-                                onCheckedChange={(checked) => setIsAdmin(checked as boolean)}
-                            />
-                            <Label htmlFor="isAdmin">Is Admin User?</Label>
-                        </div>
-                        {isClinic && (
-                            <div className="rounded-md bg-muted p-3 text-sm text-muted-foreground">
-                                <p>Marking this user as a Clinic will allow them to be configured in the Clinics section.</p>
+
+                        <div className="flex flex-col gap-4 border p-4 rounded-md">
+                            <Label className="mb-2 underline">Status & Roles</Label>
+
+                            <div className="flex items-center justify-between">
+                                <div className="space-y-0.5">
+                                    <Label htmlFor="status">Active Status</Label>
+                                    <div className="text-xs text-muted-foreground">User can login if active</div>
+                                </div>
+                                <Switch
+                                    id="status"
+                                    checked={status}
+                                    onCheckedChange={setStatus}
+                                />
                             </div>
-                        )}
+
+                            <div className="flex items-center justify-between">
+                                <div className="space-y-0.5">
+                                    <Label htmlFor="isAdmin">Admin Access</Label>
+                                    <div className="text-xs text-muted-foreground">Grant admin dashboard access</div>
+                                </div>
+                                <Switch
+                                    id="isAdmin"
+                                    checked={isAdmin}
+                                    onCheckedChange={setIsAdmin}
+                                />
+                            </div>
+
+                            <div className="flex items-center justify-between">
+                                <div className="space-y-0.5">
+                                    <Label htmlFor="isClinic">Clinic Account</Label>
+                                    <div className="text-xs text-muted-foreground">User is a clinic owner</div>
+                                </div>
+                                <Switch
+                                    id="isClinic"
+                                    checked={isClinic}
+                                    onCheckedChange={setIsClinic}
+                                />
+                            </div>
+
+                            {isClinic && (
+                                <div className="flex items-center justify-between pl-4 border-l-2 border-primary/20">
+                                    <div className="space-y-0.5">
+                                        <Label htmlFor="actAsClinic">Act As Clinic</Label>
+                                        <div className="text-xs text-muted-foreground">Toggle clinic features in app</div>
+                                    </div>
+                                    <Switch
+                                        id="actAsClinic"
+                                        checked={actAsClinic}
+                                        onCheckedChange={setActAsClinic}
+                                    />
+                                </div>
+                            )}
+                        </div>
+
                     </div>
                     <DialogFooter>
                         <Button type="submit" disabled={loading}>

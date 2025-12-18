@@ -1,6 +1,6 @@
 import { ImageUpload } from "@/components/admin/image-upload"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
@@ -49,12 +49,30 @@ export function VideoDialog({ open, onOpenChange, videoToEdit, onSuccess }: Vide
     const form = useForm<z.infer<typeof videoSchema>>({
         resolver: zodResolver(videoSchema) as any,
         defaultValues: {
-            title: videoToEdit?.title || "",
-            video_url: videoToEdit?.video_url || "",
-            thumbnail_url: videoToEdit?.thumbnail_url || "",
-            is_active: videoToEdit?.is_active ?? true,
+            title: "",
+            video_url: "",
+            thumbnail_url: "",
+            is_active: true,
         },
     })
+
+    useEffect(() => {
+        if (videoToEdit) {
+            form.reset({
+                title: videoToEdit.title || "",
+                video_url: videoToEdit.video_url || "",
+                thumbnail_url: videoToEdit.thumbnail_url || "",
+                is_active: videoToEdit.is_active ?? true,
+            })
+        } else {
+            form.reset({
+                title: "",
+                video_url: "",
+                thumbnail_url: "",
+                is_active: true,
+            })
+        }
+    }, [videoToEdit, form])
 
     const onSubmit = async (values: z.infer<typeof videoSchema>) => {
         setLoading(true)

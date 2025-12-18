@@ -1,6 +1,6 @@
 import { ImageUpload } from "@/components/admin/image-upload"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
@@ -54,11 +54,27 @@ export function CategoryDialog({ open, onOpenChange, categoryToEdit, onSuccess }
     const form = useForm<z.infer<typeof categorySchema>>({
         resolver: zodResolver(categorySchema) as any,
         defaultValues: {
-            title: categoryToEdit?.title || "",
-            type: categoryToEdit?.type || "treatment",
-            image_url: categoryToEdit?.image_url || "",
+            title: "",
+            type: "treatment",
+            image_url: "",
         },
     })
+
+    useEffect(() => {
+        if (categoryToEdit) {
+            form.reset({
+                title: categoryToEdit.title,
+                type: categoryToEdit.type,
+                image_url: categoryToEdit.image_url,
+            })
+        } else {
+            form.reset({
+                title: "",
+                type: "treatment",
+                image_url: "",
+            })
+        }
+    }, [categoryToEdit, form])
 
     const onSubmit = async (values: z.infer<typeof categorySchema>) => {
         setLoading(true)

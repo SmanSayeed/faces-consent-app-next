@@ -5,14 +5,16 @@
 create table public.profiles (
   id uuid references auth.users not null primary key,
   email text,
+  image_url text,
   first_name text,
   last_name text,
   is_clinic boolean default false, -- TRUE if user is a clinic
   active_as_clinic boolean default false, -- To toggle clinic view
+  act_as_clinic boolean default false, -- To toggle clinic view
+  status bool default false,
   is_admin boolean default false, -- Admin flag
   created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
-
 -- 2. CLINIC INFO TABLE
 -- Stores specific details for clinic users
 create table public.clinic_info (

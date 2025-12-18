@@ -31,6 +31,12 @@ interface MarketingTableProps {
 }
 
 export function MarketingTable({ items, isLoading, onEdit, onDelete }: MarketingTableProps) {
+    const getImageUrl = (url?: string) => {
+        if (!url || url === "" || url.includes('via.placeholder.com')) return "/placeholder.jpg";
+        return url;
+    };
+
+
     if (isLoading) {
         return <div>Loading marketing items...</div>
     }
@@ -52,7 +58,14 @@ export function MarketingTable({ items, isLoading, onEdit, onDelete }: Marketing
                     {items.map((item) => (
                         <TableRow key={item.id}>
                             <TableCell>
-                                <img src={item.image_url} alt={item.title} className="w-16 h-10 rounded object-cover" />
+                                <img
+                                    src={getImageUrl(item.image_url)}
+                                    alt={item.title}
+                                    className="w-16 h-10 rounded object-cover border"
+                                    onError={(e) => {
+                                        e.currentTarget.src = "/placeholder.jpg";
+                                    }}
+                                />
                             </TableCell>
                             <TableCell className="font-medium">{item.title}</TableCell>
                             <TableCell className="capitalize">{item.type}</TableCell>

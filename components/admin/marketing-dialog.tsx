@@ -1,6 +1,6 @@
 import { ImageUpload } from "@/components/admin/image-upload"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
@@ -58,14 +58,36 @@ export function MarketingDialog({ open, onOpenChange, itemToEdit, onSuccess }: M
     const form = useForm<z.infer<typeof marketingSchema>>({
         resolver: zodResolver(marketingSchema) as any,
         defaultValues: {
-            title: itemToEdit?.title || "",
-            image_url: itemToEdit?.image_url || "",
-            description: itemToEdit?.description || "",
-            type: itemToEdit?.type || "product",
-            target_audience: itemToEdit?.target_audience || "all",
-            is_featured: itemToEdit?.is_featured || false,
+            title: "",
+            image_url: "",
+            description: "",
+            type: "product",
+            target_audience: "all",
+            is_featured: false,
         },
     })
+
+    useEffect(() => {
+        if (itemToEdit) {
+            form.reset({
+                title: itemToEdit.title,
+                image_url: itemToEdit.image_url,
+                description: itemToEdit.description || "",
+                type: itemToEdit.type,
+                target_audience: itemToEdit.target_audience,
+                is_featured: itemToEdit.is_featured,
+            })
+        } else {
+            form.reset({
+                title: "",
+                image_url: "",
+                description: "",
+                type: "product",
+                target_audience: "all",
+                is_featured: false,
+            })
+        }
+    }, [itemToEdit, form])
 
     const onSubmit = async (values: z.infer<typeof marketingSchema>) => {
         setLoading(true)

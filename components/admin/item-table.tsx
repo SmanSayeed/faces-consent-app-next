@@ -29,6 +29,7 @@ interface Item {
     price: number | null
     image_url: string | null
     region_id: number | null
+    category_id: number
 }
 
 interface ItemTableProps {
@@ -40,14 +41,20 @@ interface ItemTableProps {
 }
 
 export function ItemTable({ items, regions, isLoading, onEdit, onDelete }: ItemTableProps) {
-    if (isLoading) {
-        return <div>Loading items...</div>
-    }
+    const getImageUrl = (url: string | null) => {
+        if (!url || url === "" || url.includes('via.placeholder.com')) return "/placeholder.jpg";
+        return url;
+    };
 
     const getRegionName = (id: number | null) => {
         if (!id) return "All Regions"
         const region = regions.find(r => r.id === id)
         return region ? region.name : "Unknown"
+    }
+
+
+    if (isLoading) {
+        return <div>Loading items...</div>
     }
 
     return (
@@ -66,11 +73,14 @@ export function ItemTable({ items, regions, isLoading, onEdit, onDelete }: ItemT
                     {items.map((item) => (
                         <TableRow key={item.id}>
                             <TableCell>
-                                {item.image_url ? (
-                                    <img src={item.image_url} alt={item.title} className="w-10 h-10 rounded object-cover" />
-                                ) : (
-                                    <div className="w-10 h-10 rounded bg-gray-200" />
-                                )}
+                                <img
+                                    src={getImageUrl(item.image_url)}
+                                    alt={item.title}
+                                    className="w-10 h-10 rounded object-cover border"
+                                    onError={(e) => {
+                                        e.currentTarget.src = "/placeholder.jpg";
+                                    }}
+                                />
                             </TableCell>
                             <TableCell className="font-medium">
                                 <div className="flex flex-col">

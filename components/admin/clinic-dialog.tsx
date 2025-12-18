@@ -23,27 +23,22 @@ interface ClinicDialogProps {
     clinicUser: any // The user profile object + clinic_info embedded
 }
 
+import { Switch } from "@/components/ui/switch"
+
 export function ClinicDialog({ open, onOpenChange, onSuccess, clinicUser }: ClinicDialogProps) {
     const [loading, setLoading] = useState(false)
     const [clinicName, setClinicName] = useState("")
     const [licenseNumber, setLicenseNumber] = useState("")
     const [nidNumber, setNidNumber] = useState("")
     const [docsUrl, setDocsUrl] = useState<string[]>([])
+    const [status, setStatus] = useState(false)
+    const [isClinic, setIsClinic] = useState(false)
+    const [actAsClinic, setActAsClinic] = useState(false)
+    const [activeAsClinic, setActiveAsClinic] = useState(false)
 
     useEffect(() => {
         if (clinicUser) {
-            // clinicUser might be the 'profile' with 'clinic_info' array from the join in page.tsx
-            // Or it might be the flat object if passed from table. 
-            // In page.tsx: we pass `clinic.profiles` or similar.
-            // Let's assume we pass the profile object which has `clinic_info` array.
-
-            // Wait, looking at page.tsx: `setSelectedClinicUser(clinic.profiles)` (where profiles is the profile object).
-            // But we also flattened it for the table.
-
-            // Let's rely on what `clinic.profiles` has.
-            // The fetch query was: `*, clinic_info (*)`
-            // So `clinicUser` (profile) has `clinic_info: [...]`
-
+            // clinicUser is the profile object
             const info = clinicUser.clinic_info?.[0]
             if (info) {
                 setClinicName(info.clinic_name || "")
@@ -56,11 +51,19 @@ export function ClinicDialog({ open, onOpenChange, onSuccess, clinicUser }: Clin
                 setNidNumber("")
                 setDocsUrl([])
             }
+            setStatus(clinicUser.status || false)
+            setIsClinic(clinicUser.is_clinic || false)
+            setActAsClinic(clinicUser.act_as_clinic || false)
+            setActiveAsClinic(clinicUser.active_as_clinic || false)
         } else {
             setClinicName("")
             setLicenseNumber("")
             setNidNumber("")
             setDocsUrl([])
+            setStatus(false)
+            setIsClinic(false)
+            setActAsClinic(false)
+            setActiveAsClinic(false)
         }
     }, [clinicUser, open])
 
@@ -73,7 +76,11 @@ export function ClinicDialog({ open, onOpenChange, onSuccess, clinicUser }: Clin
                 clinic_name: clinicName,
                 license_number: licenseNumber,
                 nid_number: nidNumber,
-                docs_url: docsUrl
+                docs_url: docsUrl,
+                status: status,
+                is_clinic: isClinic,
+                act_as_clinic: actAsClinic,
+                active_as_clinic: activeAsClinic
             }
 
             const { updateClinicInfo } = await import("@/actions/admin-users")
@@ -105,6 +112,54 @@ export function ClinicDialog({ open, onOpenChange, onSuccess, clinicUser }: Clin
                 </DialogHeader>
                 <form onSubmit={handleSubmit}>
                     <div className="grid gap-4 py-4">
+                        <div className="flex flex-col gap-4 border p-4 rounded-md mb-4">
+                            <Label className="mb-2 underline">Status & Visibility</Label>
+                            <div className="flex items-center justify-between">
+                                <div className="space-y-0.5">
+                                    <Label htmlFor="status">Active Status</Label>
+                                    <div className="text-xs text-muted-foreground">User can login if active</div>
+                                </div>
+                                <Switch
+                                    id="status"
+                                    checked={status}
+                                    onCheckedChange={setStatus}
+                                />
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <div className="space-y-0.5">
+                                    <Label htmlFor="isClinic">Clinic Account</Label>
+                                    <div className="text-xs text-muted-foreground">Is this user a clinic?</div>
+                                </div>
+                                <Switch
+                                    id="isClinic"
+                                    checked={isClinic}
+                                    onCheckedChange={setIsClinic}
+                                />
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <div className="space-y-0.5">
+                                    <Label htmlFor="actAsClinic">Act As Clinic</Label>
+                                    <div className="text-xs text-muted-foreground">Admin-forced clinic features</div>
+                                </div>
+                                <Switch
+                                    id="actAsClinic"
+                                    checked={actAsClinic}
+                                    onCheckedChange={setActAsClinic}
+                                />
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <div className="space-y-0.5">
+                                    <Label htmlFor="activeAsClinic">Active As Clinic</Label>
+                                    <div className="text-xs text-muted-foreground">User's current view preference</div>
+                                </div>
+                                <Switch
+                                    id="activeAsClinic"
+                                    checked={activeAsClinic}
+                                    onCheckedChange={setActiveAsClinic}
+                                />
+                            </div>
+                        </div>
+
                         <div className="grid gap-2">
                             <Label htmlFor="clinicName">Clinic Name</Label>
                             <Input
